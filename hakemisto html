@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Opiskelijakysely</title>
+        <meta name="description">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>#lomake {
+    font-family: calibri;
+    margin-left: 40%;
+}
+    #button {
+    margin-left: 46%;
+}
+        </style>
+    </head>
+    <body>
+       
+    <div id="container">
+       <div id="otsikot"> <h1>Kysely</h1>
+           <div id="alaotsikko"><h3>Kysely liittyen opiskelijoiden ja opiskelijayhdistysten välisen kommunikoinnin toimivuuteen</h3></div>
+        </div>
+        <div id="kysymykset">
+        
+             <form>
+    <div id="lomake">
+        </div> 
+        
+        
+      <button id="button">Lähetä</button>  
+    </form>    
+
+<script>
+
+    var lomakekentta = [];
+    
+    $.getJSON("http://www.mocky.io/v2/5acf2dbd2e00004c00c2c556", function(data){
+        var items = [];
+        $.each(data, function(key,d){
+        if (d.tyyppi == "text"){
+        items.push(d.kysymysteksti + "<br>");
+        items.push("<input type=" + d.tyyppi +" id=" +d.id + "><br>")
+        }
+           
+        if (d.tyyppi == "textarea"){
+        items.push(d.kysymysteksti + "<br>");
+        items.push("<textarea id=" + d.tyyppi +"></textarea><br>")
+        }
+            
+            
+        if (d.tyyppi == "radio"||d.tyyppi == "checkbox"){
+        items.push("<br>" + d.kysymysteksti + "<br>");
+        for (i = 0; i < d.value.length; i++) {
+
+        items.push("<input type=" + d.tyyppi +" id=" +d.id +" name="+d.id+" value=" +d.value[i] + ">" +d.value[i] +"<br>")}
+        }
+            
+        });
+        
+        $("<div/>", {
+        html:items.join("")
+        }).appendTo("#lomake");
+    });
+    
+   function laheta(){
+
+for (i = 0; i < lomakekentta.length; i++) {
+    lomakekentta[i];
+    tyyppi=document.getElementById(lomakekentta[i]).type;
+var radios = document.getElementsByName(lomakekentta[i]);
+         for (var x = 0, length = radios.length; x < length; x++){
+        if (radios[x].checked){ 
+               vastaus=radios[x].value;
+             }
+        if()     
+        items.push(lo)
+        }
+}
+
+
+//muuta id-tunnukset ja value-arvot JSON-muotoon
+//tulosta alert-ikkunassa ja lähetä JSON-muotoinen data 
+
+}
+
+    
+</script>
+          
+        </div>
+        
+    </div>
+        
+       
+    </body>
+</html>
 
