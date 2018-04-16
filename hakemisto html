@@ -38,7 +38,7 @@
 
     var lomakekentta = [];
     
-    $.getJSON("http://www.mocky.io/v2/5acf2dbd2e00004c00c2c556", function(data){
+    $.getJSON("kysely.json", function(data){
         var items = [];
         $.each(data, function(key,d){
         if (d.tyyppi == "text"){
