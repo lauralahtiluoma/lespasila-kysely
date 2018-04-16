@@ -1,0 +1,26 @@
+[
+{"id":"1",
+ "kysymysteksti":"Nimi",
+ "tyyppi":"text",
+ "value":""
+},
+
+{"id":"2",
+ "kysymysteksti":"Kirjoita viesti",
+ "tyyppi":"textarea",
+ "value":""
+},
+    
+{"id":"3",
+ "kysymysteksti":"Sukupuoli",
+ "tyyppi":"radio",
+ "value":["Nainen","Mies"]
+},
+    
+{"id":"4",
+ "kysymysteksti":"Harrastukset",
+ "tyyppi":"checkbox",
+ "value":["Kuntosali","Pelaaminen", "Matkustaminen"]
+}
+    
+]
