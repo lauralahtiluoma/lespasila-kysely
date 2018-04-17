@@ -11,7 +11,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style>#lomake {
     font-family: calibri;
-    margin-left: 40%;
+    
+        text-align: center;
 }
     #button {
     margin-left: 46%;
@@ -31,33 +32,29 @@
         </div> 
         
         
-      <button id="button">Lähetä</button>  
+      <button onclick="laheta()" id="button">Lähetä</button>  
     </form>    
 
 <script>
 
     var lomakekentta = [];
     
-    $.getJSON("kysely.json", function(data){
+    $.getJSON("http://167.99.253.212:8080/ohjelmistoprojekti/questions/team/1", function(data){
         var items = [];
         $.each(data, function(key,d){
-        if (d.tyyppi == "text"){
-        items.push(d.kysymysteksti + "<br>");
-        items.push("<input type=" + d.tyyppi +" id=" +d.id + "><br>")
+        lomakekentta.push(d.question_id);
+        if (d.question_type == "avoin"){
+        items.push(d.question + "<br>");
+        items.push("<input type=text id=" +d.question_id + "><br><br>")
         }
            
-        if (d.tyyppi == "textarea"){
-        items.push(d.kysymysteksti + "<br>");
-        items.push("<textarea id=" + d.tyyppi +"></textarea><br>")
+        if (d.question_type == "monivalinta"){
+        items.push(d.question + "<br>");
+        items.push("<textarea id=" + d.question_id +"></textarea><br><br>")
         }
             
             
-        if (d.tyyppi == "radio"||d.tyyppi == "checkbox"){
-        items.push("<br>" + d.kysymysteksti + "<br>");
-        for (i = 0; i < d.value.length; i++) {
-
-        items.push("<input type=" + d.tyyppi +" id=" +d.id +" name="+d.id+" value=" +d.value[i] + ">" +d.value[i] +"<br>")}
-        }
+       
             
         });
         
@@ -66,31 +63,30 @@
         }).appendTo("#lomake");
     });
     
-    /*
+    
 function laheta(){
-
+var vastaukset = [];
 for (i = 0; i < lomakekentta.length; i++) {
     
-    lomakekentta[i];
-    tyyppi=document.getElementById(lomakekentta[i]).type;
-    
-    var radios = document.getElementsByName(lomakekentta[i]);
-    for (var x = 0, length = radios.length; x < length; x++){
-    if (radios[x].checked){ 
-        vastaus=radios[x].value;
-             }
-        }
+    tunnus = lomakekentta[i];
+    vastaus =document.getElementById(lomakekentta[i]).value;
+    vastaukset.push("{'id':'" + tunnus +"','answer':'"+ vastaus + "'},");
+ 
 
 
  }
 
 //muuta id-tunnukset ja value-arvot JSON-muotoon
 //tulosta alert-ikkunassa ja lähetä JSON-muotoinen data 
+    jsonData=vastaukset.join(" ");
+alert(jsonData);
+
+
 
 }
 
 
-*/
+
     
 </script>
           
