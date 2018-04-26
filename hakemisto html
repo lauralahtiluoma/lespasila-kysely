@@ -2,6 +2,16 @@
 <html>
     
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118270583-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-118270583-1');
+</script>
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Opiskelijakysely</title>
@@ -32,7 +42,7 @@
         </div> 
         
         
-      <button onclick="laheta()" id="button">Lähetä</button>  
+      <input type="button" value="Lähetä" onclick="laheta()" id="button">  
     </form>    
 
 <script>
@@ -66,25 +76,50 @@
     
 function laheta(){
 var vastaukset = [];
+    vastaukset.push("[");
 for (i = 0; i < lomakekentta.length; i++) {
     
     tunnus = lomakekentta[i];
     vastaus =document.getElementById(lomakekentta[i]).value;
-    vastaukset.push("{'id':'" + tunnus +"','answer':'"+ vastaus + "'},");
- 
+    
+    if (i<=9) {
+    vastaukset.push("{" + '"answer"' + ":" + '"' + vastaus + '"' + "},");
+    } else {
+     vastaukset.push("{" + '"answer"' + ":" + '"' + vastaus + '"' + "}");   
+    }
+    
 
 
  }
-
+vastaukset.push("]");
 //muuta id-tunnukset ja value-arvot JSON-muotoon
 //tulosta alert-ikkunassa ja lähetä JSON-muotoinen data 
-    jsonData=vastaukset.join(" ");
-alert(jsonData);
+    jsonData=vastaukset.join("");
+    
+    alert(jsonData);
+ 
+   
 
+    
+	$.ajax({
+    url: 'http://167.99.253.212:8080/ohjelmistoprojekti/answers/team/1',
+    type: 'POST',
+    contentType: 'application/json',   
+    dataType: 'json',
+    data: jsonData, 
+    success: function(){
+        alert('POST completed. Data:' + jsonData )
+    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(textStatus);
+            alert(errorThrown);
+            alert("Status: " + XMLHttpRequest.status);
+        }
+});
+	
 
 
 }
-
 
 
     
