@@ -2,11 +2,35 @@
 <html>
     
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118270583-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-118270583-1');
+</script>
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Opiskelijakysely</title>
         <meta name="description">
         <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>#lomake {
+    font-family: calibri;
+    
+        text-align: center;
+}
+    #button {
+    margin-left: 46%;
+}
+.hidden{
+        display: none;
+      }
+        </style>
     </head>
     <body>
        
@@ -16,11 +40,122 @@
         </div>
         <div id="kysymykset">
         
+             <form>
+    <div id="lomake">
+        </div> 
         
+        
+      <input type="button" value="Lähetä" onclick="laheta()" id="button">  
+    </form>    
+    <img src="rajahdys.gif" class="hidden" id="rajahdys">
+
+<script>
+
+    var lomakekentta = [];
+    
+    $.getJSON("http://167.99.253.212:8080/ohpro/questions/survey/1", function(data){
+        var items = [];
+        $.each(data, function(key,d){
+        lomakekentta.push(d.question_id);
+        if (d.question_type.question_type == "text"){
+        items.push(d.question + "<br>");
+        items.push("<input type=text id=" +d.question_id + "><br><br>")
+        }
+        
+        if (d.question_type.question_type == "radio"){
+              items.push(d.question + "<br>");
+         for (i = 0; i < d.option_list.length; i++) { 
+    items.push("<input type=" + d.question_type.question_type + " id= "+ d.question_id+ " name="+d.question_id+" value="+ d.option_list[i].answer_option+">"+d.option_list[i].answer_option+"<br>" );
+     }}
+
+        })
+            
+            
+       
+            
+        
+        
+        $("<div/>", {
+        html:items.join("")
+        }).appendTo("#lomake");
+    });
+    
+    
+function laheta(){
+var vastaukset = [];
+    vastaukset.push("[");
+for (i = 0; i < lomakekentta.length; i++) {
+    
+    tunnus = lomakekentta[i];
+    vastaus =document.getElementById(lomakekentta).value;
+    
+    if (i<=9) {
+    vastaukset.push("{" + '"answer"' + ":" + '"' + vastaus + '"' + "},");
+    } else {
+     vastaukset.push("{" + '"answer"' + ":" + '"' + vastaus + '"' + "}");   
+    }
+    
+
+
+ }
+ 
+vastaukset.push("]");
+//muuta id-tunnukset ja value-arvot JSON-muotoon
+//tulosta alert-ikkunassa ja lähetä JSON-muotoinen data 
+    jsonData=vastaukset.join("");
+    
+    alert(jsonData);
+ 
+   
+
+    
+	$.ajax({
+    url: 'http://167.99.253.212:8080/ohpro/answers/question/1',
+    type: 'POST',
+    contentType: 'application/json',   
+    dataType: 'json',
+    data: jsonData, 
+    success: function(){
+        alert('POST completed. Data:' + jsonData )
+    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(textStatus);
+            alert(errorThrown);
+            alert("Status: " + XMLHttpRequest.status);
+        }
+});
+	
+
+
+}
+
+
+    
+</script>
+
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      $.fn.center = function () {
+        this.css("position","absolute");
+        this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()) + "px");
+        this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+        return this;
+      }
+
+      $("#button").on("click", function(){
+        $("#rajahdys").fadeIn().center();
+        setTimeout(function(){
+          $("#rajahdys").fadeOut()
+        }, 2000);
+      });
+    </script>
+          
         </div>
         
     </div>
         
        
     </body>
-</html>
+    </html>
