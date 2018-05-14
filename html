@@ -16,33 +16,74 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Opiskelijakysely</title>
         <meta name="description">
-        <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch|Fredericka+the+Great|Special+Elite" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <style>#lomake {
-    font-family: calibri;
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+    body {
+background-image: url(pasila_kampus.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+#container {
+    width: 70%;
+    min-height: 1100px;
+    background-color: white;
+    margin: auto;
+    opacity: 0.95;
+    border-radius: 25px;
+}
+
+#container h1 {
+    text-align: center;
+    font-family: 'Fredericka the Great';
+    font-size: 50px;
+    font-style: normal;
+}
+
+#container h3 {
     
-        text-align: center;
+    font-family: calibri;
+}
+
+#otsikot {
+    padding-top: 10px;
+}
+
+#alaotsikko {
+    width: 70%;
+    text-align: center;
+    margin: auto;
+}
+
+            
+    #lomake {
+    font-family: calibri;
+    text-align: left;
+    padding-left: 20%;
+    padding-right: 10%;
 }
     #button {
     margin-left: 46%;
 }
-.hidden{
+        .hidden{
         display: none;
-      }
+}
         </style>
     </head>
     <body>
        
     <div id="container">
-       <div id="otsikot"> <h1>Kysely</h1>
+       <div id="otsikot"> <h1>Opiskelijakysely</h1>
            <div id="alaotsikko"><h3>Kysely liittyen opiskelijoiden ja opiskelijayhdistysten välisen kommunikoinnin toimivuuteen</h3></div>
         </div>
         <div id="kysymykset">
         
-             <form>
+             <form><br>
     <div id="lomake">
-        </div> 
+        </div><br>
         
         
       <input type="button" value="Lähetä" onclick="laheta()" id="button">  
@@ -63,7 +104,7 @@
         }
         
         if (d.question_type.question_type == "radio"){
-              items.push(d.question + "<br>");
+              items.push("<br>" + d.question + "<br>");
          for (i = 0; i < d.option_list.length; i++) { 
     items.push("<input type=" + d.question_type.question_type + " id= "+ d.question_id+ " name="+d.question_id+" value="+ d.option_list[i].answer_option+">"+d.option_list[i].answer_option+"<br>" );
      }}
