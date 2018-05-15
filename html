@@ -21,9 +21,11 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style>
     body {
-background-image: url(pasila_kampus.jpg);
+background-image: url(pasila.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    font-family:Arial, Helvetica, sans-serif;
+
 
 }
 
@@ -34,6 +36,7 @@ background-image: url(pasila_kampus.jpg);
     margin: auto;
     opacity: 0.95;
     border-radius: 25px;
+    
 }
 
 #container h1 {
@@ -45,7 +48,7 @@ background-image: url(pasila_kampus.jpg);
 
 #container h3 {
     
-    font-family: calibri;
+    font-family: Arial;
 }
 
 #otsikot {
@@ -60,7 +63,7 @@ background-image: url(pasila_kampus.jpg);
 
             
     #lomake {
-    font-family: calibri;
+    
     text-align: left;
     padding-left: 20%;
     padding-right: 10%;
@@ -124,47 +127,61 @@ background-image: url(pasila_kampus.jpg);
     
 function laheta(){
 var vastaukset = [];
-    vastaukset.push("[");
+var lahetys = "";
+var osoite = "";
+var tyyppi = "";
+var vastaus = "";
+   
 for (i = 0; i < lomakekentta.length; i++) {
     
     tunnus = lomakekentta[i];
-    vastaus =document.getElementById(lomakekentta).value;
-    
-    if (i<=9) {
-    vastaukset.push("{" + '"answer"' + ":" + '"' + vastaus + '"' + "},");
-    } else {
-     vastaukset.push("{" + '"answer"' + ":" + '"' + vastaus + '"' + "}");   
-    }
-    
+    tyyppi = document.getElementById(lomakekentta[i]).type;
+    if (tyyppi == "text") {
+    vastaus =document.getElementById(lomakekentta[i]).value;
+    lahetys = "{" + '"text_answer"' + ": {" + '"answer"' + ": " + '"' + vastaus + '"' + "}" + "}" ;
+} else if (tyyppi == "radio") {
+    var radios = document.getElementsByName(lomakekentta[i]);
+    var apu = "";
+         for (var x = 0, length = radios.length; x < length; x++){
+            apu = x;
+        if (radios[x].checked){ 
+               vastaus=radios[x].value;
+               break;
+             }
 
+        } apu = apu + 1;
+        lahetys = "{" + '"answer_option"' + ": {" + '"answer_option_id"' + ": " + '"' + apu + '"' + "}" + "}" ;
 
- }
- 
-vastaukset.push("]");
-//muuta id-tunnukset ja value-arvot JSON-muotoon
-//tulosta alert-ikkunassa ja lähetä JSON-muotoinen data 
-    jsonData=vastaukset.join("");
+}
     
-    alert(jsonData);
- 
-   
+    osoite ="http://167.99.253.212:8080/ohpro/answers/question/" + tunnus;
 
-    
-	$.ajax({
-    url: 'http://167.99.253.212:8080/ohpro/answers/question/1',
+    alert(lahetys + osoite);    
+$.ajax({
+    url: osoite,
     type: 'POST',
     contentType: 'application/json',   
     dataType: 'json',
-    data: jsonData, 
-    success: function(){
-        alert('POST completed. Data:' + jsonData )
-    },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert(textStatus);
-            alert(errorThrown);
-            alert("Status: " + XMLHttpRequest.status);
-        }
+    data: lahetys, 
+    
+        
 });
+
+ }
+ 
+//vastaukset.push("]");
+//muuta id-tunnukset ja value-arvot JSON-muotoon
+//tulosta alert-ikkunassa ja lähetä JSON-muotoinen data 
+    //jsonData=vastaukset.join("");
+    
+   // alert(jsonData);
+ 
+   $.ajax({
+success: function laheta(){
+        alert('POST completed. Data:' + lahetys )
+    }
+});
+    
 	
 
 
